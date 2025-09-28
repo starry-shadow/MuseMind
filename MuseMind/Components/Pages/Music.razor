@@ -1,19 +1,52 @@
-﻿
-@page "/music"
+﻿@page "/music"
 @layout MuseMind.Components.Layout.MainLayout
 @using Microsoft.AspNetCore.Components
 @inject NavigationManager Nav
 @inject MuseMind.Services.StepState StepState
+@inject IJSRuntime JS
 
 <section class="music-section">
     <h2>Music with Euterpe</h2>
     <p>Let Euterpe, the Muse of music, help you relax and express yourself through sound. Listen, create, or just enjoy the moment.</p>
+    
+    <div class="music-blocks-box" style="margin-bottom:1rem;">
+        <label for="musicBlocks">Compose your music blocks:</label>
+        <textarea 
+            id="musicBlocks"
+            class="form-control"
+            style="width:100%; min-height:100px;"
+            placeholder="Enter musical notes, chords, or patterns here..."
+            @bind="musicBlocks">
+        </textarea>
+    </div>
+
     <a href="/stars" class="btn btn-primary">Next</a>
+    <button class="btn btn-secondary" @onclick="PlayMidi">Play MIDI</button>
 </section>
 
 @code {
+    private string musicBlocks;
+
     protected override void OnInitialized()
     {
         StepState.CurrentStep = 2;
     }
+
+    private async Task PlayMidi()
+    {
+        await JS.InvokeVoidAsync("playMidi", "/midi/sample.mid");
+    }
 }
+
+window.playMidi = function (filePath) {
+    MIDI.loadPlugin({
+        soundfontUrl: "./soundfont/",
+        instrument: "acoustic_grand_piano",
+        onsuccess: function() {
+            MIDI.Player.loadFile(filePath, function() {
+                MIDI.Player.start();
+            });
+        }
+    });
+};
+<script src="midiPlayer.js"></script>

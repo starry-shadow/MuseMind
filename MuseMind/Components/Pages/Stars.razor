@@ -3,16 +3,129 @@
 @using Microsoft.AspNetCore.Components
 @inject NavigationManager Nav
 @inject MuseMind.Services.StepState StepState
+@inject IHttpClientFactory ClientFactory
+
 <section class="stars-section">
     <h2>Stargaze with Urania</h2>
     <p>Urania, the Muse of astronomy, invites you to reflect on the universe and your place within it. Breathe, gaze, and find your calm.</p>
-    <a href="/" class="btn btn-primary">Return Home</a>
+
+    @if (isLoading)
+    {
+        <div class="loading">
+            <p>Urania is contemplating the stars...</p>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(constellationResponse))
+    {
+        <div class="constellation-response" style="color: #000;">
+            <h3 style="color: #000;">Urania's Celestial Insights:</h3>
+            <div class="response-content">
+                @constellationResponse
+            </div>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(error))
+    {
+        <div class="alert alert-danger" role="alert">
+            @error
+        </div>
+    }
+    
+    <div class="mt-3">
+        <a href="/" class="btn btn-primary">Return Home</a>
+    </div>
 </section>
 
-
 @code {
-    protected override void OnInitialized()
+    private bool isLoading = true;
+    private string constellationResponse = "";
+    private string error = "";
+
+    protected override async Task OnInitializedAsync()
     {
         StepState.CurrentStep = 3;
+        await GetConstellationInsights();
+    }
+
+    private async Task GetConstellationInsights()
+    {
+        try
+        {
+            isLoading = true;
+            var client = ClientFactory.CreateClient();
+            
+            // Get the correct path to journal entries
+            var currentDir = Directory.GetCurrentDirectory();
+            var projectRoot = Directory.GetParent(currentDir)?.Parent?.Parent?.Parent?.FullName;
+            if (projectRoot == null)
+            {
+                error = "Could not find project root directory";
+                return;
+            }
+            var journalPath = Path.Combine(projectRoot, "Documents", "GitHub", "MuseMind", "MuseMind", "Components", "wwwroot", "journal_entries");
+            Console.WriteLine($"Project root: {projectRoot}");
+            Console.WriteLine($"Looking for journal entries in: {journalPath}");
+            
+            Console.WriteLine($"Looking for journal entries in: {journalPath}");
+            
+            // Check if directory exists
+            if (!Directory.Exists(journalPath))
+            {
+                error = $"Journal directory not found at: {journalPath}";
+                return;
+            }
+            
+            // Get all entry files
+            var entryFiles = Directory.GetFiles(journalPath, "*_entry.txt");
+            Console.WriteLine($"Found {entryFiles.Length} entry files");
+            
+            // Get timestamps and sort
+            var timestamps = entryFiles
+                .Select(f => Path.GetFileNameWithoutExtension(f).Split('_')[0])
+                .OrderByDescending(t => t)
+                .ToList();
+
+            if (!timestamps.Any())
+            {
+                error = $"No journal entries found in: {journalPath}";
+                return;
+            }
+
+            Console.WriteLine($"Latest timestamp: {timestamps.First()}");
+
+            var latestTimestamp = timestamps.First();
+            
+            // Get the journal entry
+            var journalResponse = await client.GetFromJsonAsync<Dictionary<string, string>>(
+                $"http://localhost:5001/api/journal/{latestTimestamp}");
+
+            if (journalResponse != null && journalResponse.ContainsKey("entry"))
+            {
+                // Get constellation insights based on the journal entry
+                var response = await client.PostAsJsonAsync("http://localhost:5001/api/constellation", 
+                    new { journalEntry = journalResponse["entry"] });
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                    if (result != null && result.ContainsKey("response"))
+                    {
+                        constellationResponse = result["response"];
+                    }
+                }
+                else
+                {
+                    error = "Failed to get constellation insights. Please try again.";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            error = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
     }
 }

@@ -13,7 +13,7 @@ client = genai.Client(api_key=api_key)
 
 # Ask Gemini to expand a seed into a melody
 seed = "C4 (1), D4 (1), E4 (1), F4 (1), G4 (2), E4 (2)"
-style = "very rapidly fast paced, simple melody "
+style = "very rapidly fast paced, simple flute melody "
 prompt = """
 You are a composer. Given a seed melody, extend it into a 16-bar song, allowing multiple notes at once (polyphony, i.e., chords or harmonies).
 Give the piece an Ancient Greek music vibe (use Greek modes, tempo, ornamentation, and phrasing).
@@ -28,7 +28,7 @@ Example:
         {"pitch": ["E4", "G4"], "duration": 2}
     ]
 }
-Make sure to add no comments or other weird structures, just valid JSON.
+Make sure to add NO COMMENTS.
 
 seed melody:
 """ + seed + "\nstyle: " + style
@@ -100,4 +100,8 @@ def make_midi(music_data, filename="output.mid"):
     print(f"MIDI file saved at: {abs_path}")
     return abs_path
 
+    # Ensure directory exists
+    # os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+# make_midi(music_data, filename="./MuseMind/wwwroot/Assets/output.mid")
 make_midi(music_data)
