@@ -22,7 +22,7 @@
     <p>
         Start exploring and let the Muses inspire your path to better mental health.
     </p>
-    <button class="btn btn-primary" style="margin-top:2rem; font-size:1.2rem; padding:0.7rem 2.2rem;" @onclick="GoNext">Get Started</button>
+    <a href="/journal" class="btn btn-primary" style="margin-top:2rem; font-size:1.2rem; padding:0.7rem 2.2rem;">Get Started</a>
 </section>
 
 @inject MuseMind.Services.StepState StepState
@@ -31,9 +31,5 @@
     protected override void OnInitialized()
     {
         StepState.CurrentStep = 0;
-    }
-    private void GoNext()
-    {
-        Nav.NavigateTo("/journal");
     }
 }

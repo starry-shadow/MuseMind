@@ -5,6 +5,7 @@ from google import genai
 # The client gets the API key from the environment variable `GEMINI_API_KEY`.
 client = genai.Client()
 
+
 # Clio, the muse of history
 journal_entry = """Today I had so much work I feel anxious and overwhelmed with work and personal responsibilities. 
 I have trouble sleeping and concentrating. I often feel like I'm not good enough and worry about the future."""

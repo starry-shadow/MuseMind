@@ -6,16 +6,12 @@
 <section class="journal-section">
     <h2>Journal with Clio</h2>
     <p>Reflect on your day, your thoughts, or anything on your mind. Clio, the Muse of history, helps you process your story.</p>
-    <button class="btn btn-primary" @onclick="GoNext">Next</button>
+    <a href="/music" class="btn btn-primary">Next</a>
 </section>
 
 @code {
     protected override void OnInitialized()
     {
         StepState.CurrentStep = 1;
-    }
-    private void GoNext()
-    {
-        Nav.NavigateTo("/music");
     }
 }
