@@ -6,10 +6,20 @@
 <section class="journal-section">
     <h2>Journal with Clio</h2>
     <p>Reflect on your day, your thoughts, or anything on your mind. Clio, the Muse of history, helps you process your story.</p>
+    
+    <textarea 
+        class="form-control" 
+        style="width:100%; min-height:150px; margin-bottom:1rem;" 
+        placeholder="Start writing your journal here..."
+        @bind="journalEntry">
+    </textarea>
+
     <a href="/music" class="btn btn-primary">Next</a>
 </section>
 
 @code {
+    private string journalEntry;
+
     protected override void OnInitialized()
     {
         StepState.CurrentStep = 1;
