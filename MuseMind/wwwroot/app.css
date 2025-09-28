@@ -1,5 +1,15 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-image: linear-gradient(
+        to top,
+        #172B64 0%,
+        #20386e 40%,
+        #2A4F77 100%
+    );
+    background-blend-mode:overlay;
+    min-height: 100vh;
+    color: white;
+    display: flex;
 }
 
 a, .btn-link {
@@ -48,4 +58,41 @@ h1:focus {
 
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
+}
+
+
+.Base-Button {
+    display: flex;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 30px;
+    padding-right: 30px;
+    align-items: center;
+    gap: 0.5rem;
+    width: 350px;
+    justify-content:space-between;
+}
+.Base-Button:hover {
+    filter: brightness(0.92);
+}
+.Base-Button > h2 {
+    margin: 0;
+    flex: 0 1 auto;
+}
+.Clio-Button {
+    background-image: linear-gradient(to top,#FFC55A,#FF8000);
+}
+.Euterpe-Button {
+    background-image: linear-gradient(to top,#3AEBFF,#004DFF);
+}
+.Urania-Button {
+    background-image: linear-gradient(to top,#723FDF,#864EFF);
+}
+.Button-Menu {
+    display:flex;
+    flex-direction:column;
+    gap:1.0rem;
 }
