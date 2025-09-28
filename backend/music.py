@@ -12,11 +12,13 @@ if not api_key:
 client = genai.Client(api_key=api_key)
 
 # Ask Gemini to expand a seed into a melody
+seed = "C4 (1), D4 (1), E4 (1), F4 (1), G4 (2), E4 (2)"
+style = "very rapidly fast paced, simple melody "
 prompt = """
-You are a composer. Given a seed melody (C4, E4, G4), extend it into a 16-bar melody for a flute, allowing multiple notes at once (polyphony, i.e., chords or harmonies).
-Give the piece an Ancient Greek music vibe (use Greek modes, ornamentation, and phrasing).
+You are a composer. Given a seed melody, extend it into a 16-bar song, allowing multiple notes at once (polyphony, i.e., chords or harmonies).
+Give the piece an Ancient Greek music vibe (use Greek modes, tempo, ornamentation, and phrasing).
 Output strictly in JSON with keys: tempo, key, and notes[],
-where each note is either a single pitch (like C4, D#3) or a list of pitches (for chords, e.g., ["C4", "E4"]). Each note/chord has a duration in beats.
+where each note is either a single pitch (like C4, D#3) or a list of pitches (for chords, e.g., ["C4", "E4", "G4, "Bb5"]). Each note/chord has a duration in beats.
 Example:
 {
     "tempo": 90,
@@ -27,7 +29,9 @@ Example:
     ]
 }
 Make sure to add no comments or other weird structures, just valid JSON.
-"""
+
+seed melody:
+""" + seed + "\nstyle: " + style
 
 response = client.models.generate_content(
     model="gemini-2.5-flash",
