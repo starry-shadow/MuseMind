@@ -1,0 +1,18 @@
+@page "/stars"
+@layout MuseMind.Components.Layout.MainLayout
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager Nav
+@inject MuseMind.Services.StepState StepState
+<section class="stars-section">
+    <h2>Stargaze with Urania</h2>
+    <p>Urania, the Muse of astronomy, invites you to reflect on the universe and your place within it. Breathe, gaze, and find your calm.</p>
+    <!-- Add stargazing UI here -->
+</section>
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        StepState.CurrentStep = 3;
+    }
+}

@@ -1,0 +1,24 @@
+﻿
+@page "/music"
+@layout MuseMind.Components.Layout.MainLayout
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager Nav
+@inject MuseMind.Services.StepState StepState
+
+<section class="music-section">
+    <h2>Music with Euterpe</h2>
+    <p>Let Euterpe, the Muse of music, help you relax and express yourself through sound. Listen, create, or just enjoy the moment.</p>
+    <button class="btn btn-primary" @onclick="GoNext">Next</button>
+</section>
+
+@code {
+    protected override void OnInitialized()
+    {
+        StepState.CurrentStep = 2;
+    }
+    private void GoNext()
+    {
+        Nav.NavigateTo("/stars");
+    }
+}
+<h1>Weather</h1>

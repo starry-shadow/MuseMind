@@ -1,0 +1,21 @@
+﻿@page "/journal"
+@layout MuseMind.Components.Layout.MainLayout
+@inject NavigationManager Nav
+@inject MuseMind.Services.StepState StepState
+
+<section class="journal-section">
+    <h2>Journal with Clio</h2>
+    <p>Reflect on your day, your thoughts, or anything on your mind. Clio, the Muse of history, helps you process your story.</p>
+    <button class="btn btn-primary" @onclick="GoNext">Next</button>
+</section>
+
+@code {
+    protected override void OnInitialized()
+    {
+        StepState.CurrentStep = 1;
+    }
+    private void GoNext()
+    {
+        Nav.NavigateTo("/music");
+    }
+}

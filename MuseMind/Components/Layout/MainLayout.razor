@@ -1,13 +1,46 @@
-﻿@inherits LayoutComponentBase
+﻿
+@inherits LayoutComponentBase
+
+
+@inject MuseMind.Services.StepState StepState
+
+@implements IDisposable
+
+@code {
+    protected override void OnInitialized()
+    {
+        StepState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        StepState.OnChange -= StateHasChanged;
+    }
+}
 
 <div>
-
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+    <nav class="main-navbar">
+        <div class="navbar-content">
+            <h1 class="navbar-title">MuseMind</h1>
+            <div class="Indicator-Menu Button-Menu-Top">
+                <div class="Indicator Clio-Indicator @((StepState.CurrentStep == 1 || StepState.CurrentStep == 0) ? "active" : "dim")">
+                    <img src="/Assets/crown of laurels white.png" width="72" height="66" style="transform:scaleX(-1);">
+                    <h2>Clio</h2>
+                    <img src="/Assets/greek-muse-white.png" width="93" height="93" style="transform: scaleX(-1);">
+                </div>
+                <div class="Indicator Euterpe-Indicator @((StepState.CurrentStep == 2 || StepState.CurrentStep == 0) ? "active" : "dim")">
+                    <img src="/Assets/flute white.png" width="72" height="66" style="transform:scaleX(-1);">
+                    <h2>Euterpe</h2>
+                    <img src="/Assets/greek-muse-white.png" width="93" height="93" style="transform: scaleX(-1);">
+                </div>
+                <div class="Indicator Urania-Indicator @((StepState.CurrentStep == 3 || StepState.CurrentStep == 0) ? "active" : "dim")">
+                    <img src="/Assets/twinkle star white png.png" width="72" height="66" style="transform:scaleX(-1);">
+                    <h2>Urania</h2>
+                    <img src="/Assets/greek-muse-white.png" width="93" height="93" style="transform: scaleX(-1);">
+                </div>
+            </div>
         </div>
-
+    </nav>
+    <main>
         <article class="content px-4">
             @Body
         </article>

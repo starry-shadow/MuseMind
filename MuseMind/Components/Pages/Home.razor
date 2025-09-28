@@ -1,25 +1,39 @@
 ﻿@page "/"
 
 <PageTitle>Home</PageTitle>
-<h1>MuseMind</h1>
-<div class="Button-Menu">
-    <button class="Base-Button Clio-Button">
-        <img src="/Assets/crown of laurels white.png" width="72" height="66" style="transform:scaleX(-1);">
-        <h2>Clio</h2>
-        <img src="/Assets/greek-muse-white.png" width="93" height="93" style="transform: scaleX(-1);">
-    </button>
-
-    <button class="Base-Button Euterpe-Button">
-        <img src="/Assets/flute white.png" width="72" height="66" style="transform:scaleX(-1);">
-        <h2>Euterpe</h2>
-        <img src="/Assets/greek-muse-white.png" width="93" height="93" style="transform: scaleX(-1);">
-    </button>
-
-    <button class="Base-Button Urania-Button">
-        <img src="/Assets/twinkle star white png.png" width="72" height="66" style="transform:scaleX(-1);">
-        <h2>Urania</h2>
-        <img src="/Assets/greek-muse-white.png" width="93" height="93" style="transform: scaleX(-1);">
-    </button>
-</div>
 
 
+@layout MuseMind.Components.Layout.MainLayout
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager Nav
+<section class="product-description">
+    <h2>Welcome to MuseMind</h2>
+    <p>
+        MuseMind is a mental health app inspired by the wisdom and creativity of the 9 Greek Muses. Here, you can interact with different Muses to relieve stress, self-reflect, and process your emotions in a supportive, creative environment.
+    </p>
+    <p>
+        Each Muse offers a unique way to help you on your mental wellness journey—whether through music, journaling, art, or guided reflection. MuseMind is designed to help you find calm, gain insight, and nurture your emotional well-being.
+    </p>
+    <ul>
+        <li>Relieve stress with creative activities</li>
+        <li>Self-reflect with the guidance of the Muses</li>
+        <li>Process your emotions in a safe, supportive space</li>
+    </ul>
+    <p>
+        Start exploring and let the Muses inspire your path to better mental health.
+    </p>
+    <button class="btn btn-primary" style="margin-top:2rem; font-size:1.2rem; padding:0.7rem 2.2rem;" @onclick="GoNext">Get Started</button>
+</section>
+
+@inject MuseMind.Services.StepState StepState
+
+@code {
+    protected override void OnInitialized()
+    {
+        StepState.CurrentStep = 0;
+    }
+    private void GoNext()
+    {
+        Nav.NavigateTo("/journal");
+    }
+}

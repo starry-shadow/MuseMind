@@ -1,10 +1,15 @@
+
+
 using MuseMind.Components;
+using MuseMind.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+// Register StepState as a scoped service
+builder.Services.AddScoped<StepState>();
 
 var app = builder.Build();
 

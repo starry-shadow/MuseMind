@@ -1,12 +1,165 @@
+.Indicator-Menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2.0rem;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.Indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 18px 24px 18px 24px;
+    min-width: 120px;
+    opacity: 1;
+    transition: opacity 0.2s, filter 0.2s;
+}
+.Indicator h2 {
+    margin: 0.5rem 0 0.5rem 0;
+    font-size: 1.3rem;
+}
+.Indicator.active {
+    filter: none;
+    opacity: 1;
+}
+.Indicator.dim {
+    filter: grayscale(0.7) brightness(0.7);
+    opacity: 0.6;
+}
+.Clio-Indicator.active {
+    background-image: linear-gradient(to top,#FFC55A,#FF8000);
+}
+.Euterpe-Indicator.active {
+    background-image: linear-gradient(to top,#3AEBFF,#004DFF);
+}
+.Urania-Indicator.active {
+    background-image: linear-gradient(to top,#723FDF,#864EFF);
+}
+/* Main NavBar Styles */
+.main-navbar {
+    width: 100vw;
+    background: linear-gradient(180deg, #101c3a 0%, #1a1140 100%);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 100;
+}
+
+.navbar-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.navbar-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin: 0;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.main-navbar .Button-Menu-Top {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.sidebar-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 270px;
+    height: 100vh;
+    background: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+    z-index: 2000;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    display: flex;
+    flex-direction: column;
+    padding-top: 2rem;
+}
+
+    .sidebar-menu.open {
+        transform: translateX(0);
+    }
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.3);
+    z-index: 1999;
+    transition: opacity 0.3s;
+}
+
+.hamburger {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 2100;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: 6px;
+}
+
+    .hamburger .bar {
+        width: 28px;
+        height: 4px;
+        background: #fff;
+        border-radius: 2px;
+        transition: all 0.3s;
+    }
+
+.sidebar-menu .Button-Menu {
+    margin-top: 2rem;
+}
+
+@media (min-width: 900px) {
+    .hamburger {
+        display: none;
+    }
+
+    .sidebar-menu {
+        position: static;
+        transform: none !important;
+        width: 270px;
+        height: auto;
+        box-shadow: none;
+    }
+
+    .sidebar-overlay {
+        display: none !important;
+    }
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-image: linear-gradient(
-        to top,
-        #172B64 0%,
-        #20386e 40%,
-        #2A4F77 100%
-    );
-    background-blend-mode:overlay;
+    background-image: linear-gradient( to top, #172B64 0%, #20386e 40%, #2A4F77 100% );
+    background-blend-mode: overlay;
     min-height: 100vh;
     color: white;
     display: flex;
@@ -23,7 +176,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
@@ -73,26 +226,46 @@ h1:focus {
     align-items: center;
     gap: 0.5rem;
     width: 350px;
-    justify-content:space-between;
+    justify-content: space-between;
 }
-.Base-Button:hover {
-    filter: brightness(0.92);
-}
-.Base-Button > h2 {
-    margin: 0;
-    flex: 0 1 auto;
-}
+
+    .Base-Button:hover {
+        filter: brightness(0.92);
+    }
+
+    .Base-Button > h2 {
+        margin: 0;
+        flex: 0 1 auto;
+    }
+
 .Clio-Button {
     background-image: linear-gradient(to top,#FFC55A,#FF8000);
 }
+
 .Euterpe-Button {
     background-image: linear-gradient(to top,#3AEBFF,#004DFF);
 }
+
 .Urania-Button {
     background-image: linear-gradient(to top,#723FDF,#864EFF);
 }
+
 .Button-Menu {
-    display:flex;
-    flex-direction:column;
-    gap:1.0rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.0rem;
+}
+
+.Button-Menu-Top {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2.0rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Remove sidebar/hamburger styles if present */
+.sidebar-menu, .sidebar-overlay, .hamburger {
+    display: none !important;
 }
