@@ -2,16 +2,125 @@
 @layout MuseMind.Components.Layout.MainLayout
 @inject NavigationManager Nav
 @inject MuseMind.Services.StepState StepState
+@inject IHttpClientFactory ClientFactory
+@rendermode InteractiveServer
+
+<PageTitle>Journal</PageTitle>
 
 <section class="journal-section">
     <h2>Journal with Clio</h2>
     <p>Reflect on your day, your thoughts, or anything on your mind. Clio, the Muse of history, helps you process your story.</p>
-    <a href="/music" class="btn btn-primary">Next</a>
+    
+    <div class="journal-form">
+        <textarea 
+            class="form-control mb-3" 
+            rows="5" 
+            placeholder="Write your thoughts here..." 
+            @bind="journalEntry"
+            @bind:event="oninput">
+        </textarea>
+        <button 
+            class="btn @(isSubmitting ? "btn-warning" : "btn-secondary") mb-3" 
+            @onclick="SubmitEntry"
+            disabled="@isSubmitting">
+            @if (isSubmitting)
+            {
+                <span>Processing...</span>
+            }
+            else
+            {
+                <span>Submit Entry</span>
+            }
+        </button>
+        
+        @if (!string.IsNullOrEmpty(response))
+        {
+            <div class="response-section mt-3">
+                <h3>Clio's Response:</h3>
+                <div class="response-content" style="color: #000;">
+                    @response
+                </div>
+            </div>
+        }
+        
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @error
+            </div>
+        }
+    </div>
 </section>
 
 @code {
+    private string journalEntry = "";
+    private string response = "";
+    private string error = "";
+    private bool isSubmitting = false;
+
     protected override void OnInitialized()
     {
         StepState.CurrentStep = 1;
     }
+
+    private async Task SubmitEntry()
+    {
+        if (string.IsNullOrWhiteSpace(journalEntry))
+        {
+            error = "Please write something in your journal first.";
+            return;
+        }
+
+        error = "";
+        isSubmitting = true;
+        
+        try
+        {
+            var client = ClientFactory.CreateClient();
+            
+            // Submit the entry
+            var entryResponse = await client.PostAsJsonAsync(
+                "http://localhost:5001/api/journal",
+                new { entry = journalEntry }
+            );
+            
+            if (!entryResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to submit journal entry");
+            }
+            
+            var result = await entryResponse.Content.ReadFromJsonAsync<JournalResponse>();
+            
+            // Get the response
+            var responseResult = await client.GetFromJsonAsync<JournalResponseContent>(
+                $"http://localhost:5001/api/journal/{result.Timestamp}"
+            );
+            
+            response = responseResult.Response;
+        }
+        catch (Exception ex)
+        {
+            error = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isSubmitting = false;
+            StateHasChanged();
+        }
+    }
+
+    private class JournalResponse
+    {
+        public bool Success { get; set; }
+        public string Timestamp { get; set; }
+    }
+
+    private class JournalResponseContent
+    {
+        public string Response { get; set; }
+    }
 }
+
+<div class="mt-4">
+    <a href="/music" class="btn btn-primary">Next</a>
+</div>

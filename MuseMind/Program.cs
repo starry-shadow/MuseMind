@@ -1,15 +1,17 @@
 
-
 using MuseMind.Components;
 using MuseMind.Services;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-// Register StepState as a scoped service
+
 builder.Services.AddScoped<StepState>();
+builder.Services.AddHttpClient();
+
+// Add antiforgery services
+builder.Services.AddAntiforgery();
 
 var app = builder.Build();
 
